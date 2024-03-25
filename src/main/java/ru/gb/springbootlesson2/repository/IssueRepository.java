@@ -25,4 +25,10 @@ public class IssueRepository {
         return list.stream()
                 .anyMatch(e -> e.getIdReader() == readerId);
     }
+
+    public List<Issue> getAllIssuesForReader(long readerId) {
+        return list.stream()
+                .filter(e -> e.getIdReader() == readerId)
+                .toList();
+    }
 }

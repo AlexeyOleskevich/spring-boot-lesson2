@@ -29,13 +29,15 @@ public class ReaderController {
         }
     }
 
-    @GetMapping("/{id}/issue")
-    public ResponseEntity<List<Issue>> getReaderIssues(@PathVariable long id) {
-        /*
-        TODO
-         */
-        return null;
+    @GetMapping("/{readerId}/issue")
+    public ResponseEntity<List<Issue>> getReaderIssues(@PathVariable long readerId) {
+        try {
+            return ResponseEntity.status(HttpStatus.FOUND).body(readerService.getAllIssuesForReader(readerId));
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
+
 
     @DeleteMapping("/{id}")
     public void deleteReader(@PathVariable long id) {
@@ -54,4 +56,5 @@ public class ReaderController {
             return ResponseEntity.badRequest().build();
         }
     }
+
 }

@@ -1,11 +1,15 @@
 package ru.gb.springbootlesson2.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.gb.springbootlesson2.controllers.reader.ReaderRequest;
+import ru.gb.springbootlesson2.entity.Issue;
 import ru.gb.springbootlesson2.entity.Reader;
+import ru.gb.springbootlesson2.repository.IssueRepository;
 import ru.gb.springbootlesson2.repository.ReaderRepository;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @RequiredArgsConstructor
@@ -13,6 +17,7 @@ import java.util.NoSuchElementException;
 public class ReaderService {
 
     private final ReaderRepository readerRepository;
+    private final  IssueRepository issueRepository;
 
     public Reader createReader(ReaderRequest readerRequest) {
         if (readerRequest == null) {
@@ -33,5 +38,14 @@ public class ReaderService {
             throw new NoSuchElementException("Не удалось найти читателя с id = " + id);
         }
         readerRepository.deleteById(id);
+    }
+
+    public List<Issue> getAllIssuesForReader(long readerId) {
+        List<Issue> issuesForReader = issueRepository.getAllIssuesForReader(readerId);
+
+        if (issuesForReader == null) {
+            throw new NoSuchElementException("Не удалось найти выдачи для читателя с id = " + readerId);
+        }
+        return issuesForReader;
     }
 }

@@ -26,6 +26,7 @@ public class IssueService {
             throw new NoSuchElementException("Не удалось найти читателя с id " + request.getReaderId());
         }
 
+
         if (isReaderHaveBook(request.getReaderId())) {
             throw new RuntimeException("Пользователь с id = " + request.getReaderId() + " уже имеет книгу");
         }
