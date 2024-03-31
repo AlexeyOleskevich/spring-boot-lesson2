@@ -1,7 +1,6 @@
 package ru.gb.springbootlesson2.repository;
 
 import org.springframework.stereotype.Repository;
-import ru.gb.springbootlesson2.entity.Book;
 import ru.gb.springbootlesson2.entity.Reader;
 
 import java.util.ArrayList;
@@ -15,6 +14,10 @@ public class ReaderRepository {
         list.add(new Reader("Костя"));
         list.add(new Reader("Василий"));
         list.add(new Reader("Семен"));
+    }
+
+    public List<Reader> getAllReaders() {
+        return List.copyOf(list);
     }
 
     public Reader add(Reader reader) {

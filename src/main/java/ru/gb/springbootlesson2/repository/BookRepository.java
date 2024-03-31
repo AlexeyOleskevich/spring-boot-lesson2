@@ -18,6 +18,10 @@ public class BookRepository {
        list.add(new Book("Алиса в стране чудес"));
    }
 
+   public List<Book> getAllBooks() {
+       return List.copyOf(list);
+   }
+
    public Book add(Book book) {
        list.add(book);
        return book;

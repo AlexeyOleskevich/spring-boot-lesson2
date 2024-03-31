@@ -6,6 +6,7 @@ import ru.gb.springbootlesson2.controllers.book.BookRequest;
 import ru.gb.springbootlesson2.entity.Book;
 import ru.gb.springbootlesson2.repository.BookRepository;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @RequiredArgsConstructor
@@ -19,6 +20,10 @@ public class BookService {
             throw new NullPointerException();
         }
         return bookRepository.add(new Book(bookRequest.getName()));
+    }
+
+    public List<Book> getAllBooks() {
+        return bookRepository.getAllBooks();
     }
 
     public Book getBook(long id) {

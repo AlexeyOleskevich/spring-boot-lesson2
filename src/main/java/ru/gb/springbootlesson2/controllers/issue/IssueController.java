@@ -31,7 +31,7 @@ public class IssueController {
     }
 
     @PostMapping
-    public ResponseEntity<Issue> issueBook (@RequestBody IssueRequest issueRequest) {
+    public ResponseEntity<Issue> createIssue (@RequestBody IssueRequest issueRequest) {
         log.info("Поступил запрос на выдачу: readerId={}, bookId={}", issueRequest.getReaderId(), issueRequest.getBookId());
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(service.createIssue(issueRequest));
@@ -42,5 +42,15 @@ public class IssueController {
         }
     }
 
+    @PutMapping("{issueId}")
+    public ResponseEntity<Void> closeIssue(@PathVariable long issueId) {
+        try {
+            service.returnBook(issueId);
+            return ResponseEntity.ok().build();
+        } catch (NoSuchElementException e) {
+            log.info("Выдачи с id = {} нет в базе данных.", issueId);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
 }
 

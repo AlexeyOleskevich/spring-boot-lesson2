@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.gb.springbootlesson2.controllers.issue.IssueRequest;
 import ru.gb.springbootlesson2.entity.Issue;
 import ru.gb.springbootlesson2.entity.Reader;
 import ru.gb.springbootlesson2.services.ReaderService;

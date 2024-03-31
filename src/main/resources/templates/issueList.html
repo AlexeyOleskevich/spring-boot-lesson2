@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>issue list</title>
+</head>
+<body>
+    <table>
+        <tr>
+            <td>Книга</td>
+            <td>Читатель</td>
+            <td>Дата выдачи</td>
+            <td>Дата возврата</td>
+        </tr>
+        <tr th:each="issue: ${issues}">
+            <td th:text="${issue.getBookTitle()}"></td>
+            <td th:text="${issue.getReaderName()}"></td>
+            <td th:text="${issue.getIssuedAt()}"></td>
+            <td th:text="${issue.getReturnedAt()}"></td>
+        </tr>
+    </table>
+</body>
+</html>
