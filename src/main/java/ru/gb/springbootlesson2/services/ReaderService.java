@@ -1,9 +1,8 @@
 package ru.gb.springbootlesson2.services;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.gb.springbootlesson2.controllers.reader.ReaderRequest;
+import ru.gb.springbootlesson2.dto.ReaderRequest;
 import ru.gb.springbootlesson2.entity.Book;
 import ru.gb.springbootlesson2.entity.Issue;
 import ru.gb.springbootlesson2.entity.Reader;
@@ -24,32 +23,30 @@ public class ReaderService {
     private final BookRepository bookRepository;
 
     public List<Reader> getAllReaders() {
-        return readerRepository.getAllReaders();
+        return readerRepository.findAll();
     }
 
     public Reader createReader(ReaderRequest readerRequest) {
         if (readerRequest == null) {
             throw new NullPointerException();
         }
-        return readerRepository.add(new Reader(readerRequest.getName()));
+
+        if (readerRepository.existsByName(readerRequest.getName())){
+            throw new RuntimeException("Читатель с таким именем уже есть в базе данных.");
+        }
+        return readerRepository.save(new Reader(readerRequest.getName()));
     }
 
     public Reader getReader(long id) {
-        if (readerRepository.findById(id) == null) {
-            throw new NoSuchElementException("Не удалось найти читателя с id = " + id);
-        }
-        return readerRepository.findById(id);
+        return readerRepository.findById(id).orElseThrow();
     }
 
     public void deleteReader(long id) {
-        if (readerRepository.findById(id) == null) {
-            throw new NoSuchElementException("Не удалось найти читателя с id = " + id);
-        }
         readerRepository.deleteById(id);
     }
 
     public List<Issue> getAllIssuesForReader(long readerId) {
-        List<Issue> issuesForReader = issueRepository.getAllIssuesForReader(readerId);
+        List<Issue> issuesForReader = issueRepository.findIssuesByIdReader(readerId);
 
         if (issuesForReader == null) {
             throw new NoSuchElementException("Не удалось найти выдачи для читателя с id = " + readerId);
@@ -63,7 +60,7 @@ public class ReaderService {
 
         for (Issue issue : issues) {
             if (issue.getReturnedAt() == null) {
-                result.add(bookRepository.findById(issue.getIdBook()));
+                result.add(bookRepository.findById(issue.getIdBook()).orElseThrow());
             }
         }
         return result;

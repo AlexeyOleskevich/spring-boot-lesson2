@@ -1,4 +1,4 @@
-package ru.gb.springbootlesson2.controllers.reader;
+package ru.gb.springbootlesson2.dto;
 
 import lombok.Data;
 

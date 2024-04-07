@@ -2,12 +2,11 @@ package ru.gb.springbootlesson2.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.gb.springbootlesson2.controllers.book.BookRequest;
+import ru.gb.springbootlesson2.dto.BookRequest;
 import ru.gb.springbootlesson2.entity.Book;
 import ru.gb.springbootlesson2.repository.BookRepository;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @RequiredArgsConstructor
 @Service
@@ -19,24 +18,22 @@ public class BookService {
         if (bookRequest == null) {
             throw new NullPointerException();
         }
-        return bookRepository.add(new Book(bookRequest.getName()));
+
+        if (bookRepository.existsByName(bookRequest.getName())){
+            throw new RuntimeException("Книга с таким названием уже есть в базе данных.");
+        }
+        return bookRepository.save(new Book(bookRequest.getName()));
     }
 
     public List<Book> getAllBooks() {
-        return bookRepository.getAllBooks();
+        return bookRepository.findAll();
     }
 
     public Book getBook(long id) {
-        if (bookRepository.findById(id) == null) {
-            throw new NoSuchElementException("Не удалось найти книгу с id = " + id);
-        }
-        return bookRepository.findById(id);
+        return bookRepository.findById(id).orElseThrow();
     }
 
     public void deleteBook(long id) {
-        if (bookRepository.findById(id) == null) {
-            throw new NoSuchElementException("Не удалось найти книгу с id = " + id);
-        }
         bookRepository.deleteById(id);
     }
 }
